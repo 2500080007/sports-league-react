@@ -1,16 +1,74 @@
-# React + Vite
+# 🏆 Sports League Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## About the Project
 
-Currently, two official plugins are available:
+The Sports League Management System is a web-based application developed using React.js. It helps administrators manage sports leagues and allows users to view league information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technologies Used
 
-## React Compiler
+* React.js
+* JavaScript
+* HTML
+* CSS
+* Vite
+* Local Storage
+* React Router DOM
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Modules
 
-## Expanding the ESLint configuration
+### 1. Admin Module
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Admin Login and Signup
+* Manage Teams
+* Manage Players
+* Schedule Matches
+* Manage Match Results
+* View League Standings
+
+### 2. User Module
+
+* User Registration and Login
+* View Teams
+* View Players
+* View Upcoming Matches
+* View Match Results
+* View League Standings
+
+## Features
+
+* Role-based Login
+* Admin and User Dashboards
+* Add, Edit and Delete Operations
+* Local Storage Data Management
+* Responsive User Interface
+* Protected Routes
+
+## Live Deployment
+
+https://sports-league-react.vercel.app
+
+## GitHub Repository
+
+https://github.com/2500080007/sports-league-react
+
+## Installation
+
+1. Clone the repository.
+
+   `git clone https://github.com/2500080007/sports-league-react.git`
+
+2. Open the project folder.
+
+   `cd sports-league-react`
+
+3. Install dependencies.
+
+   `npm install`
+
+4. Run the application.
+
+   `npm run dev`
+
+## Developed By
+
+Sports League Management System Project
