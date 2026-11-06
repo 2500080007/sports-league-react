@@ -2,22 +2,27 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { getCurrentUser } from "../utils/auth";
 
+function getSavedTeams() {
+    try {
+        return JSON.parse(localStorage.getItem("teams")) || [];
+    } catch {
+        return [];
+    }
+}
+
 function Teams() {
     const user = getCurrentUser();
     const isAdmin = user?.role === "admin";
 
-    const [teams, setTeams] = useState(() => {
-        return JSON.parse(localStorage.getItem("teams")) || [];
-    });
-
+    const [teams, setTeams] = useState(getSavedTeams);
     const [teamName, setTeamName] = useState("");
     const [coach, setCoach] = useState("");
     const [players, setPlayers] = useState("");
     const [editId, setEditId] = useState(null);
 
     const saveTeams = (updatedTeams) => {
-        setTeams(updatedTeams);
         localStorage.setItem("teams", JSON.stringify(updatedTeams));
+        setTeams(updatedTeams);
     };
 
     const handleSubmit = (e) => {
@@ -40,9 +45,9 @@ function Teams() {
         } else {
             const newTeam = {
                 id: Date.now(),
-                teamName,
-                coach,
-                players
+                teamName: teamName.trim(),
+                coach: coach.trim(),
+                players: Number(players)
             };
 
             saveTeams([...teams, newTeam]);
@@ -56,7 +61,7 @@ function Teams() {
     const handleEdit = (team) => {
         setTeamName(team.teamName);
         setCoach(team.coach);
-        setPlayers(team.players);
+        setPlayers(String(team.players));
         setEditId(team.id);
     };
 
@@ -66,8 +71,15 @@ function Teams() {
         }
     };
 
+    const cancelEdit = () => {
+        setTeamName("");
+        setCoach("");
+        setPlayers("");
+        setEditId(null);
+    };
+
     return (
-        <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
+        <div style={pageStyle}>
             <Navbar />
 
             <main style={{ padding: "30px" }}>
@@ -75,17 +87,10 @@ function Teams() {
                 <p>Manage and explore all participating teams.</p>
 
                 {isAdmin && (
-                    <form
-                        onSubmit={handleSubmit}
-                        style={{
-                            background: "white",
-                            padding: "25px",
-                            marginTop: "25px",
-                            borderRadius: "10px",
-                            maxWidth: "500px"
-                        }}
-                    >
-                        <h2>{editId !== null ? "Edit Team" : "Add New Team"}</h2>
+                    <form onSubmit={handleSubmit} style={formStyle}>
+                        <h2>
+                            {editId !== null ? "Edit Team" : "Add New Team"}
+                        </h2>
 
                         <input
                             type="text"
@@ -105,6 +110,7 @@ function Teams() {
 
                         <input
                             type="number"
+                            min="1"
                             placeholder="Number of Players"
                             value={players}
                             onChange={(e) => setPlayers(e.target.value)}
@@ -114,6 +120,20 @@ function Teams() {
                         <button type="submit" style={buttonStyle}>
                             {editId !== null ? "Update Team" : "Add Team"}
                         </button>
+
+                        {editId !== null && (
+                            <button
+                                type="button"
+                                onClick={cancelEdit}
+                                style={{
+                                    ...buttonStyle,
+                                    background: "#64748b",
+                                    marginLeft: "10px"
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        )}
                     </form>
                 )}
 
@@ -121,10 +141,7 @@ function Teams() {
 
                 <div style={gridStyle}>
                     {teams.length === 0 ? (
-                        <p>
-                            No teams available.
-                            {isAdmin && " Add your first team above."}
-                        </p>
+                        <p>No teams available.</p>
                     ) : (
                         teams.map((team) => (
                             <div key={team.id} style={cardStyle}>
@@ -133,7 +150,7 @@ function Teams() {
                                 <p>Players: {team.players}</p>
 
                                 {isAdmin && (
-                                    <div style={{ marginTop: "15px" }}>
+                                    <div>
                                         <button
                                             onClick={() => handleEdit(team)}
                                             style={buttonStyle}
@@ -162,12 +179,27 @@ function Teams() {
     );
 }
 
+const pageStyle = {
+    minHeight: "100vh",
+    background: "#f1f5f9",
+    fontFamily: "Arial"
+};
+
+const formStyle = {
+    background: "white",
+    padding: "25px",
+    marginTop: "25px",
+    borderRadius: "10px",
+    maxWidth: "500px"
+};
+
 const inputStyle = {
     width: "100%",
     padding: "12px",
     marginTop: "15px",
     border: "1px solid #ccc",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    boxSizing: "border-box"
 };
 
 const buttonStyle = {
